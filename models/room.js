@@ -1,21 +1,37 @@
-const { DataTypes, Model } = require("sequelize");
-const sequelize = require("../config/database");
+const { DataTypes } = require("sequelize");
+const sequelize = require("../config/db");
 
-class Room extends Model {}
-
-Room.init(
-  {
-    id: { type: DataTypes.BIGINT, autoIncrement: true, primaryKey: true },
-    name: { type: DataTypes.STRING, allowNull: false },
-    capacity: { type: DataTypes.INTEGER, allowNull: false },
-    price_per_hour: { type: DataTypes.DECIMAL(10, 2), allowNull: false },
+const Room = sequelize.define("Room", {
+  id: {
+    type: DataTypes.BIGINT,
+    autoIncrement: true,
+    primaryKey: true,
   },
-  {
-    sequelize,
-    modelName: "Room",
-    tableName: "rooms",
-    timestamps: false,
-  }
-);
+  room_number: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    unique: true,
+  },
+  count: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
+  price: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
+  image: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
+  characteristics: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
+  status: {
+    type: DataTypes.STRING,
+    defaultValue: "active", 
+  },
+});
 
 module.exports = Room;

@@ -1,39 +1,25 @@
-// server.js
 const express = require("express");
-const cors = require("cors");
-const swaggerJsDoc = require("swagger-jsdoc");
-const swaggerUi = require("swagger-ui-express");
-const db = require("./models");
-
-const userRoutes = require("./routes/userRoutes");
-const orderRoutes = require("./routes/orderRoutes");
-const productRoutes = require("./routes/productRoutes");
-const roomRoutes = require("./routes/roomRoutes");
+const sequelize = require("./config/db");
+const authRoutes = require("./routes/auth");
+const orderRoutes = require("./routes/order");
+const productRoutes = require("./routes/product");
+const roomRoutes = require("./routes/room");
+const setupSwagger = require("./config/swagger");
 
 const app = express();
-app.use(cors());
 app.use(express.json());
 
-const swaggerOptions = {
-  swaggerDefinition: {
-    openapi: "3.0.0",
-    info: {
-      title: "Game Club API",
-      version: "1.0.0",
-    },
-  },
-  apis: ["./routes/*.js"],
-};
-const swaggerDocs = swaggerJsDoc(swaggerOptions);
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
-
-app.use("/api/users", userRoutes);
+app.use("/api/auth", authRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/rooms", roomRoutes);
 
-db.sequelize.sync().then(() => {
-  app.listen(5000, () => {
-    console.log("Server running on port 5000");
+setupSwagger(app);
+
+const PORT = process.env.PORT || 5000;
+sequelize.sync().then(() => {
+  console.log("Database ulandi!");
+  app.listen(PORT, () => {
+    console.log(`Server ${PORT} portda ishlamoqda...`);
   });
 });

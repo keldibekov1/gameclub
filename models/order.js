@@ -1,21 +1,37 @@
-const { DataTypes, Model } = require("sequelize");
-const sequelize = require("../config/database");
+const { DataTypes } = require("sequelize");
+const sequelize = require("../config/db");
+const User = require("./user");
 
-class User extends Model {}
 
-User.init(
-  {
-    id: { type: DataTypes.BIGINT, autoIncrement: true, primaryKey: true },
-    name: { type: DataTypes.STRING, allowNull: false },
-    email: { type: DataTypes.STRING, allowNull: false, unique: true },
-    password: { type: DataTypes.STRING, allowNull: false },
+const Order = sequelize.define("Order", {
+  id: {
+    type: DataTypes.BIGINT,
+    autoIncrement: true,
+    primaryKey: true,
   },
-  {
-    sequelize,
-    modelName: "User",
-    tableName: "users",
-    timestamps: false,
-  }
-);
+  user_id: {
+    type: DataTypes.BIGINT,
+    allowNull: false,
+    references: {
+      model: User,
+      key: "id",
+    },
+  },
+  total: {
+    type: DataTypes.BIGINT,
+    allowNull: false,
+  },
+  payment: {
+    type: DataTypes.BIGINT,
+    allowNull: false,
+  },
+  status: {
+    type: DataTypes.STRING,
+    defaultValue: "pending", // "pending", "completed", "cancelled"
+  },
+});
 
-module.exports = User;
+User.hasMany(Order, { foreignKey: "user_id" });
+Order.belongsTo(User, { foreignKey: "user_id" });
+
+module.exports = Order;
