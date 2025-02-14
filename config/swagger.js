@@ -14,8 +14,22 @@ const options = {
         url: "http://63.177.173.107:5000",
       },
     ],
+    components: {
+      securitySchemes: {
+        BearerAuth: {
+          type: "http",
+          scheme: "bearer",
+          bearerFormat: "JWT", // Tokenni JWT formatida kiritishingiz mumkin
+        },
+      },
+    },
+    security: [
+      {
+        BearerAuth: [], 
+      },
+    ],
   },
-  apis: ["./routes/*.js"], // Barcha route fayllarini Swagger'ga qo‘shish
+  apis: ["./routes/*.js"], 
 };
 
 const swaggerSpec = swaggerJsdoc(options);
