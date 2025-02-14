@@ -9,7 +9,7 @@ const sequelize = new Sequelize("kompyuter_klubi", "root", "1212", {
 const connectDB = async () => {
   try {
     await sequelize.authenticate();
-    console.log("MySQL bilan muvaffaqiyatli bog‘landi!");
+    console.log("MySQL bilan muvaffaqiyatli boglandi!");
   } catch (error) {
     console.error("MySQLga ulanishda xatolik:", error);
     process.exit(1);

@@ -11,7 +11,7 @@ const options = {
     },
     servers: [
       {
-        url: "http://localhost:5000",
+        url: "http://63.177.173.107:5000/api-docs",
         description: "Lokal server",
       },
     ],
